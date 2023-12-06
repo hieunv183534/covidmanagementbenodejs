@@ -1,6 +1,7 @@
 import UserModel from "../models/user-model.js";
 import PersonInfo from "../models/person-info-model.js";
 import UnitModel from "../models/unit-model.js";
+import unitModel from "../models/unit-model.js";
 
 const setWarningLevel = (cases) => {
   let level = 0;
@@ -19,6 +20,7 @@ class UnitController {
   // [GET] /unit/unit-info
   // unit/unit-info/:unit?page=2&total
   getUnitInfo = async (req, res, next) => {
+    
     const page = +req.query.page || 1;
     const total = +req.query.total || 30;
 
@@ -95,11 +97,11 @@ class UnitController {
     }
 
     console.log("unitList: ", unitList);
-    if(unitList.length === 0){
+    if (unitList.length === 0) {
       res.status(405).json({
-        message:"No unit list found"
+        message: "No unit list found"
       });
-    } else{
+    } else {
 
       res.status(200).json({
         message: "fetching list of units successfully",
@@ -110,22 +112,22 @@ class UnitController {
 
   };
 
-  getSingleUnit = async(req, res, next) => {
+  getSingleUnit = async (req, res, next) => {
     const unitCode = req.query.unit;
 
     let unit;
-    try{
-      unit = await UnitModel.findOne({unitCode: unitCode});
-      
-    }catch(err){
+    try {
+      unit = await UnitModel.findOne({ unitCode: unitCode });
+
+    } catch (err) {
       res.status(403).json(err);
     }
     console.log("unit: ", unit);
-    if(!unit){
+    if (!unit) {
       return res.status(405).json({
-        message:"No unit found"
+        message: "No unit found"
       });
-    } 
+    }
     res.status(200).json({
       message: "fetching unit successfully",
       data: unit,
@@ -140,9 +142,9 @@ class UnitController {
     let unitSplit = unitId.split("|");
     console.log("unitPlilt: " + unitSplit);
 
-    let unit_p = "|"+unitSplit[1]+"|";
-    let unit_d = unit_p + unitSplit[2]+"|";
-    let unit_w = unit_d + unitSplit[3]+"|";
+    let unit_p = "|" + unitSplit[1] + "|";
+    let unit_d = unit_p + unitSplit[2] + "|";
+    let unit_w = unit_d + unitSplit[3] + "|";
 
     console.log("unit: ", unit_p)
     console.log("unit: ", unit_d)
